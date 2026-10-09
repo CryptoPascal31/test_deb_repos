@@ -53,7 +53,7 @@ jobs:
           - os-version: noble
             runner: ubuntu-24.04
           - os-version: resolute
-            runner: ubuntu-24.04
+            runner: ubuntu-26.04
 
     runs-on: ${{ matrix.runner }}
 
