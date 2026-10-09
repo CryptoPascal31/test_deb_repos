@@ -102,6 +102,7 @@ jobs:
 
   add_repo:
     runs-on: ubuntu-latest
+    fail-fast: false
     needs: build_deb
     if: always()
     strategy:
