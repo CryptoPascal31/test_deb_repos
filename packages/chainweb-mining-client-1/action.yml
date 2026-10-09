@@ -116,7 +116,7 @@ runs:
           --public-key 0000000000000000000000000000000000000000000000000000000000000000 \
           --node 127.0.0.1:1848 \
           --stratum-port 1917 \
-          --print-config > config/config.yml
+          --print-config > config/config.yaml
 
     - name: Build Deb file
       working-directory: ${{ github.action_path }}
