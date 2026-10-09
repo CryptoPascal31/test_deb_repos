@@ -24,6 +24,7 @@ jobs:
             tag: "1.2"
             ghc: 9.10.3
             cabal: "3.12"
+            build-dir: kda-tool-1
 
         include:
           - os-version: bookworm
@@ -45,7 +46,7 @@ jobs:
 
       - name: Prepare directories
         run: |
-          cp -rf packages/${{ matrix.package.name }} current
+          cp -rf packages/${{ matrix.package.build-dir }} current
           mkdir -p dist
 
       - name: Build package
