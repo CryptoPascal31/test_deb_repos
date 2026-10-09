@@ -125,20 +125,20 @@ runs:
         cp README.md ${GITHUB_ACTION_PATH}
 
 
-  #  - name: Build Chainweb Deb file
-  #    working-directory: ${{ github.action_path }}
-  #    env:
-  #      VERSION: ${{ inputs.version }}
-  #    shell: bash
-  #    run: |
-  #      nfpm package -p deb -f nfpm_node.yaml \
-  #        -t ${GITHUB_WORKSPACE}/dist/chainweb-node_${{ inputs.version }}-${{ inputs.os-version }}_amd64.deb
-#
-  #  - name: Build Compact Deb file
-  #    working-directory: ${{ github.action_path }}
-  #    env:
-  #      VERSION: ${{ inputs.version }}
-  #    shell: bash
-  #    run: |
-  #      nfpm package -p deb -f nfpm_compact.yaml \
-  #        -t ${GITHUB_WORKSPACE}/dist/chainweb-node_${{ inputs.version }}-${{ inputs.os-version }}_amd64.deb
+    - name: Build Chainweb Deb file
+      working-directory: ${{ github.action_path }}
+      env:
+        VERSION: ${{ inputs.version }}
+      shell: bash
+      run: |
+        nfpm package -p deb -f nfpm_node.yaml \
+          -t ${GITHUB_WORKSPACE}/dist/chainweb-node_${{ inputs.version }}-${{ inputs.os-version }}_amd64.deb
+
+    - name: Build Compact Deb file
+      working-directory: ${{ github.action_path }}
+      env:
+        VERSION: ${{ inputs.version }}
+      shell: bash
+      run: |
+        nfpm package -p deb -f nfpm_compact.yaml \
+          -t ${GITHUB_WORKSPACE}/dist/chainweb-compact_${{ inputs.version }}-${{ inputs.os-version }}_amd64.deb

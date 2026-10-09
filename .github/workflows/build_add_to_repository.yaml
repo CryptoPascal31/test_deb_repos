@@ -25,7 +25,7 @@ jobs:
           - name: chainweb-mining-client
             version: "0.8"
             tag: "0.8"
-            ghc: 9.14.1
+            ghc: "9.14.1"
             cabal: "3.16"
             build-dir: chainweb-mining-client-1
             pkg-release: "1"
@@ -33,7 +33,7 @@ jobs:
           - name: kda-tool
             version: "1.2"
             tag: "1.2"
-            ghc: 9.10.3
+            ghc: "9.10.3"
             cabal: "3.12"
             build-dir: kda-tool-1
             pkg-release: "1"
@@ -41,16 +41,16 @@ jobs:
           - name: pact
             version: "5.4.1"
             tag: "5.4.1"
-            ghc: 9.10.3
+            ghc: "9.10.3"
             cabal: "3.12"
             build-dir: pact-1
             pkg-release: "1"
 
           - name: chainweb-node
-            version: "5.4.1"
-            tag: "5.4.1"
-            ghc: 9.10.3
-            cabal: "3.12"
+            version: "3.2.1"
+            tag: "3.2.1"
+            ghc: "9.10.2"
+            cabal: "3.14"
             build-dir: chainweb-node-1
             pkg-release: "1"
 

@@ -1,0 +1,32 @@
+name: chainweb-compact
+arch: amd64
+platform: linux
+version: ${VERSION}
+section: utils
+priority: optional
+maintainer: kda_community@pm.me
+description:
+vendor: Kadena Community Edition
+homepage: https://github.com/kda-community/chainweb-node
+license: BSD-3-Clause
+
+contents:
+  - src: ./compact
+    dst: /usr/bin/compact
+    file_info:
+      mode: 0755
+
+deb:
+  arch: amd64
+  compression: zstd
+
+  signature:
+    method: debsign
+    key_id: 0DAB3992EA300D37E3684495F98399F3FBED5A94
+
+depends:
+  - libssl3t64 | libssl3   # OpenSSL (t64 sur Debian 13 / Ubuntu 24.04+)
+  - zlib1g                 # zlib
+  - libgmp10               # GMP
+  - libmpfr6               # MPFR
+  - chainweb-node

@@ -2,7 +2,7 @@
 Description=Kadena Mining Client
 
 [Service]
-User=mining
+User=chainweb-mining-client
 KillMode=process
 KillSignal=SIGINT
 

@@ -1,0 +1,17 @@
+[Unit]
+Description=Chainweb node
+
+[Service]
+User=chainweb
+KillMode=process
+KillSignal=SIGINT
+
+LimitNOFILE=65536
+
+WorkingDirectory=/var/lib/chainweb
+ExecStart=chainweb-node --config-file=/etc/chainweb/config.yaml
+Restart=always
+RestartSec=30
+
+[Install]
+WantedBy=multi-user.target
