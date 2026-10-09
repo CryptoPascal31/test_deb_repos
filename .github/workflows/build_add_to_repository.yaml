@@ -28,6 +28,7 @@ jobs:
             ghc: 9.14.1
             cabal: "3.16"
             build-dir: chainweb-mining-client-1
+            pkg-release: "1"
 
           - name: kda-tool
             version: "1.2"
@@ -35,6 +36,7 @@ jobs:
             ghc: 9.10.3
             cabal: "3.12"
             build-dir: kda-tool-1
+            pkg-release: "1"
 
           - name: pact
             version: "5.4.1"
@@ -42,6 +44,15 @@ jobs:
             ghc: 9.10.3
             cabal: "3.12"
             build-dir: pact-1
+            pkg-release: "1"
+
+          - name: chainweb-node
+            version: "5.4.1"
+            tag: "5.4.1"
+            ghc: 9.10.3
+            cabal: "3.12"
+            build-dir: chainweb-node-1
+            pkg-release: "1"
 
         include:
           - os-version: bookworm
@@ -87,6 +98,7 @@ jobs:
           ghc: ${{ matrix.package.ghc }}
           cabal: ${{ matrix.package.cabal }}
           os-version: ${{ matrix.os-version }}
+          pkg-release: ${{ matrix.package.pkg-release }}
           gpg-key: ${{ secrets.APT_SIGNING_KEY }}
           gpg-passphrase: ${{ secrets.APT_SIGNING_KEY_PASSPHRASE }}
 

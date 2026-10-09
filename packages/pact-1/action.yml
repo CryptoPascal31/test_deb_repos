@@ -1,5 +1,5 @@
 
-name: Build Pact package
+name: Build and Package Pact
 inputs:
   tag:
     required: true
@@ -14,6 +14,8 @@ inputs:
   gpg-key:
     required: true
   gpg-passphrase:
+    required: true
+  pkg-release:
     required: true
 
 runs:
@@ -112,7 +114,7 @@ runs:
       working-directory: ${{ github.action_path }}
       env:
         VERSION: ${{ inputs.version }}
-        RELEASE: 1-${{ inputs.os-version }}
+        RELEASE: ${{ inputs.pkg-release }}-${{ inputs.os-version }}
       shell: bash
       run: |
         nfpm package -p deb -f nfpm.yaml \

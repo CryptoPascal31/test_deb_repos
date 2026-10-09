@@ -1,0 +1,144 @@
+
+name: Build and Package Chainweb Node
+
+inputs:
+  tag:
+    required: true
+  ghc:
+    required: true
+  cabal:
+    required: true
+  version:
+    required: true
+  os-version:
+    required: true
+  gpg-key:
+    required: true
+  gpg-passphrase:
+    required: true
+  pkg-release:
+    required: true
+
+runs:
+  using: composite
+
+  steps:
+    - name: Checkout repository
+      uses: actions/checkout@v7
+      with:
+          repository: kda-community/chainweb-node.git
+          ref: ${{ inputs.tag }}
+          path: chainweb-node
+
+    - name: Install NFPM
+      env:
+        NFPM_VERSION: 2.47.0
+      shell: bash
+      run: |
+        wget -q https://github.com/goreleaser/nfpm/releases/download/v${NFPM_VERSION}/nfpm_${NFPM_VERSION}_amd64.deb
+        sudo dpkg -i nfpm_${NFPM_VERSION}_amd64.deb
+
+    - name: Set permissions for .ghcup (ubuntu)
+      shell: bash
+      run: sudo chown -R $USER /usr/local/.ghcup
+
+    - name: Install GHC and Cabal
+      uses: haskell-actions/setup@v2
+      with:
+         ghc-version: ${{ inputs.ghc }}
+         cabal-version: ${{ inputs.cabal }}
+
+    - name: Setting up required Packages
+      shell: bash
+      run: sudo apt-get install -y libgflags-dev liblz4-dev libzstd-dev libsnappy-dev libbz2-dev libmpfr-dev
+
+    - name: Create cabal.project.local
+      working-directory: ./chainweb-node
+      shell: bash
+      run: |
+        cat > cabal.project.local <<EOF
+        package *
+          documentation: False
+        package chainweb
+          documentation: False
+          benchmarks: True
+          tests: True
+          optimization: 1
+          ghc-options: -Wunused-packages
+        package pact
+          documentation: False
+        EOF
+
+
+    - name: Print cabal.project.local
+      working-directory: ./chainweb-node
+      shell: bash
+      run: cat cabal.project.local
+
+    - name: Update package database
+      shell: bash
+      run: cabal update
+
+    - name: Build dependencies
+      working-directory: ./chainweb-node
+      shell: bash
+      run: cabal build --only-dependencies
+
+    - name: Build Node
+      working-directory: ./chainweb-node
+      shell: bash
+      run: cabal build -j2 --ghc-options=-j2 exe:chainweb-node
+
+    - name: Build Compaction tool
+      working-directory: ./chainweb-node
+      shell: bash
+      run: cabal build -j2 --ghc-options=-j2 exe:compact
+
+
+
+    - name: Verify Binary Linking
+      working-directory: ./chainweb-node
+      shell: bash
+      run: |
+        cabal run exe:chainweb-node -- --help
+        cabal run exe:compact -- --help
+
+    - name: Check version
+      working-directory: ./chainweb-node
+      shell: bash
+      run: |
+        OUTPUT=$(cabal run exe:chainweb-node -- --version)
+        VERSION=$(echo "$OUTPUT" | sed -n 's/.*chainweb-node-\([^ ]*\) .*/\1/p')
+        if [[ "$VERSION" != "${{ inputs.version }}" ]]; then
+          echo "Version mismatch: expected ${{ inputs.version }}, got $VERSION"
+          exit 1
+        fi
+
+    - name: Copy and prepare materials
+      working-directory: ./chainweb-node
+      shell: bash
+      run: |
+        cp $(cabal list-bin chainweb-node) ${GITHUB_ACTION_PATH}
+        cp $(cabal list-bin compact) ${GITHUB_ACTION_PATH}
+        strip ${GITHUB_ACTION_PATH}/chainweb-node
+        strip ${GITHUB_ACTION_PATH}/compact
+        cp README.md ${GITHUB_ACTION_PATH}
+
+
+  #  - name: Build Chainweb Deb file
+  #    working-directory: ${{ github.action_path }}
+  #    env:
+  #      VERSION: ${{ inputs.version }}
+  #    shell: bash
+  #    run: |
+  #      nfpm package -p deb -f nfpm_node.yaml \
+  #        -t ${GITHUB_WORKSPACE}/dist/chainweb-node_${{ inputs.version }}-${{ inputs.os-version }}_amd64.deb
+#
+  #  - name: Build Compact Deb file
+  #    working-directory: ${{ github.action_path }}
+  #    env:
+  #      VERSION: ${{ inputs.version }}
+  #    shell: bash
+  #    run: |
+  #      nfpm package -p deb -f nfpm_compact.yaml \
+  #        -t ${GITHUB_WORKSPACE}/dist/chainweb-node_${{ inputs.version }}-${{ inputs.os-version }}_amd64.deb
