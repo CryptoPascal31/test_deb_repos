@@ -1,0 +1,100 @@
+
+name: Build KDA Tool
+
+
+inputs:
+  tag:
+    required: true
+  ghc:
+    required: true
+  cabal:
+    required: true
+  version:
+    required: true
+
+
+runs:
+  using: composite
+
+  steps:
+    - name: Checkout repository
+      uses: actions/checkout@v7
+      with:
+          repository: kda-community/kda-tool.git
+          ref: ${{ inputs.tag }}
+          path: kda-tool
+
+    - name: Check version
+      working-directory: ./kda-tool
+      shell: bash
+      run: |
+        VERSION=$(grep -E '^version:' kda-tool.cabal | awk '{print $2}')
+        if [[ "$VERSION" != "${{ inputs.version }}" ]]; then
+          echo "Version mismatch: expected ${{ inputs.version }}, got $VERSION"
+          exit 1
+        fi
+
+    - name: Set permissions for .ghcup (ubuntu)
+      shell: bash
+      run: sudo chown -R $USER /usr/local/.ghcup
+
+    - name: Install GHC and Cabal
+      uses: haskell-actions/setup@v2
+      with:
+         ghc-version: ${{ inputs.ghc }}
+         cabal-version: ${{ inputs.cabal }}
+
+    - name: Setting up MPFR (Ubuntu)
+      shell: bash
+      run: sudo apt-get update && sudo apt-get install -y libmpfr-dev
+
+    - name: Create cabal.project.local
+      working-directory: ./kda-tool
+      shell: bash
+      run: |
+        cat > cabal.project.local <<EOF
+        documentation: False
+        package pact
+          tests: False
+          benchmarks: False
+          documentation: False
+          optimization: 1
+          flags: +cryptonite-ed25519
+        extra-include-dirs:
+          /opt/local/include
+          /usr/local/opt/openssl/include
+        extra-lib-dirs:
+          /opt/local/lib
+          /usr/local/opt/openssl/lib/
+        EOF
+
+    - name: Print cabal.project.local
+      working-directory: ./kda-tool
+      shell: bash
+      run: cat cabal.project.local
+
+    - name: Update package database
+      shell: bash
+      run: cabal update
+
+    - name: Build dependencies
+      working-directory: ./kda-tool
+      shell: bash
+      run: cabal build --only-dependencies
+
+    - name: Build
+      working-directory: ./kda-tool
+      shell: bash
+      run: cabal exe:kda
+
+    - name: Verify Binary Linking
+      working-directory: ./kda-tool
+      shell: bash
+      run: cabal run exe:kda -- --help
+
+    - name: Copy and strip binary
+      working-directory: ./kda-tool
+      shell: bash
+      run: |
+        cp $(cabal list-bin kda) ../dist
+        strip ../dist/kda

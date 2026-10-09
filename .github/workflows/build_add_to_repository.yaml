@@ -1,0 +1,55 @@
+
+name: Build packages and Add ro repository
+
+on:
+  workflow_dispatch:
+
+  push:
+
+jobs:
+  build_deb:
+    strategy:
+      matrix:
+        os-version:
+          - bookworm
+          - trixie
+          - jammy
+          - noble
+          - resolute
+
+        package:
+          - name: kda-tool
+            version: "1.2"
+            tag: "1.2"
+            ghc: 9.10.3
+            cabal: "3.12"
+
+        include:
+          - os-version: bookworm
+            runner: ubuntu-22.04
+          - os-version: trixie
+            runner: ubuntu-24.04
+          - os-version: jammy
+            runner: ubuntu-22.04
+          - os-version: noble
+            runner: ubuntu-24.04
+          - os-version: resolute
+            runner: ubuntu-24.04
+
+    runs-on: ${{ matrix.runner }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Prepare dirs action
+        run: |
+          cp -rf packages/${{ matrix.package.name }} current
+          mkdr -p dist
+
+      - name: Build package
+        uses: ./current
+        with:
+          tag: ${{ matrix.package.tag }}
+          ghc: ${{ matrix.package.ghc }}
+          cabal: ${{ matrix.package.cabal }}
