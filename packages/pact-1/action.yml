@@ -1,0 +1,120 @@
+
+name: Build Pact package
+inputs:
+  tag:
+    required: true
+  ghc:
+    required: true
+  cabal:
+    required: true
+  version:
+    required: true
+
+runs:
+  using: composite
+
+  steps:
+    - name: Checkout repository
+      uses: actions/checkout@v7
+      with:
+          repository: kda-community/pact-5.git
+          ref: ${{ inputs.tag }}
+          path: pact-5
+
+    - name: Check version
+      working-directory: ./pact-5
+      shell: bash
+      run: |
+        VERSION=$(grep -E '^version:' pact-5.cabal | awk '{print $2}')
+        if [[ "$VERSION" != "${{ inputs.version }}" ]]; then
+          echo "Version mismatch: expected ${{ inputs.version }}, got $VERSION"
+          exit 1
+        fi
+
+    - name: Install NFPM
+      env:
+        NFPM_VERSION: 2.47.0
+      shell: bash
+      run: |
+        wget -q https://github.com/goreleaser/nfpm/releases/download/v${NFPM_VERSION}/nfpm_${NFPM_VERSION}_amd64.deb
+        sudo dpkg -i nfpm_${NFPM_VERSION}_amd64.deb
+
+    - name: Set permissions for .ghcup (ubuntu)
+      shell: bash
+      run: sudo chown -R $USER /usr/local/.ghcup
+
+    - name: Install GHC and Cabal
+      uses: haskell-actions/setup@v2
+      with:
+         ghc-version: ${{ inputs.ghc }}
+         cabal-version: ${{ inputs.cabal }}
+
+    - name: Setting up MPFR (Ubuntu)
+      shell: bash
+      run: sudo apt-get update && sudo apt-get install -y libmpfr-dev
+
+    - name: Create cabal.project.local
+      working-directory: ./pact-5
+      shell: bash
+      run: |
+        cat > cabal.project.local <<EOF
+        documentation: False
+        package pact-tng
+          tests: False
+          benchmarks: False
+          documentation: False
+          optimization: 1
+          flags: +cryptonite-ed25519
+        EOF
+
+    - name: Print cabal.project.local
+      working-directory: ./pact-5
+      shell: bash
+      run: cat cabal.project.local
+
+    - name: Update package database
+      shell: bash
+      run: cabal update
+
+    - name: Build dependencies
+      working-directory: ./pact-5
+      shell: bash
+      run: cabal build --only-dependencies
+
+    - name: Build
+      working-directory: ./pact-5
+      shell: bash
+      run: cabal build exe:pact
+
+    - name: Verify Binary Linking
+      working-directory: ./pact-5
+      shell: bash
+      run: cabal run exe:pact -- --help
+
+    - name: Check version
+      working-directory: ./pact-5
+      shell: bash
+      run: |
+        OUTPUT=$(cabal run exe:pact -- --version)
+        PACT_VERSION=$(cabal run exe:pact -- --version | awk '{print $3}')
+        if [[ "$PACT_VERSION" != "${{ inputs.version }}" ]]; then
+          echo "Version mismatch: expected ${{ inputs.version }}, got $PACT_VERSION"
+          exit 1
+        fi
+
+    - name: Copy and prepare materials
+      working-directory: ./pact-5
+      shell: bash
+      run: |
+        cp $(cabal list-bin pact) ${GITHUB_ACTION_PATH}
+        strip ${GITHUB_ACTION_PATH}/pact
+        cp CHANGELOG.md ${GITHUB_ACTION_PATH}
+        cp README.md ${GITHUB_ACTION_PATH}
+        cp LICENSE ${GITHUB_ACTION_PATH}
+
+    #- name: Build Deb file
+    #  working-directory: ${{ github.action_path }}
+    #  env:
+    #    VERSION: ${{ inputs.version }}
+    #  shell: bash
+    #  run: nfpm package -p deb -f nfpm.yaml -t ${GITHUB_WORKSPACE}/dist

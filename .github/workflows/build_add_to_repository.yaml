@@ -6,6 +6,9 @@ on:
 
   push:
 
+permissions:
+  contents: write
+
 jobs:
   build_deb:
     strategy:
@@ -33,6 +36,13 @@ jobs:
             cabal: "3.12"
             build-dir: kda-tool-1
 
+          - name: pact
+            version: "5.4.1"
+            tag: "5.4.1"
+            ghc: 9.10.3
+            cabal: "3.12"
+            build-dir: pact-1
+
         include:
           - os-version: bookworm
             runner: ubuntu-22.04
@@ -59,8 +69,7 @@ jobs:
       - name: Prepare cache Ref
         env:
           MATRIX_JSON: ${{ toJSON(matrix) }}
-        run: |
-          printf '%s\n' "$MATRIX_JSON" > .cache_ref
+        run: printf '%s\n' "$MATRIX_JSON" > .cache_ref
 
       - name: Cache Deb files
         id: cache-deb
@@ -68,7 +77,6 @@ jobs:
         with:
           path: dist
           key: deb-${{ hashFiles(format('packages/{0}/**', matrix.package.build-dir), '.cache_ref') }}
-
 
       - name: Build package
         if: steps.cache-deb.outputs.cache-hit != 'true'
@@ -88,6 +96,7 @@ jobs:
           name: deb-${{ matrix.package.name }}-deb-${{ matrix.package.version }}-${{ matrix.os-version }}
           path: dist/*.deb
 
+
   add_repo:
     runs-on: ubuntu-latest
     needs: build_deb
@@ -99,7 +108,7 @@ jobs:
           - trixie
           - jammy
           - noble
-          - resolute]
+          - resolute
 
     steps:
       - name: Checkout repository
@@ -123,9 +132,10 @@ jobs:
             trixie
             jammy
             noble
-            resolute]
+            resolute
           file: "*.deb"
           file_target_version: ${{ matrix.os-version }}
           private_key: ${{ secrets.APT_SIGNING_KEY }}
           public_key: ${{ secrets.APT_SIGNING_PUBKEY }}
           key_passphrase: ${{ secrets.APT_SIGNING_KEY_PASSPHRASE }}
+          skip_duplicates: true
