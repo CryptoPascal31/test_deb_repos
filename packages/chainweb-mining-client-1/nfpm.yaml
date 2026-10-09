@@ -1,4 +1,4 @@
-name: Chainweb mining client
+name: chainweb-mining-client
 arch: amd64
 platform: linux
 version: ${VERSION}
