@@ -86,6 +86,7 @@ jobs:
           version: ${{ matrix.package.version }}
           ghc: ${{ matrix.package.ghc }}
           cabal: ${{ matrix.package.cabal }}
+          os-version: ${{ matrix.os-version }}
 
       - name: List packages
         run : ls -alh dist

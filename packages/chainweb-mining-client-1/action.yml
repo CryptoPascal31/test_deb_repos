@@ -10,6 +10,8 @@ inputs:
     required: true
   version:
     required: true
+  os-version:
+    required: true
 
 runs:
   using: composite

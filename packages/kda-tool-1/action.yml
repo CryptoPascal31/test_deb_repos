@@ -10,6 +10,8 @@ inputs:
     required: true
   version:
     required: true
+  os-version:
+    required: true
 
 runs:
   using: composite
@@ -111,4 +113,6 @@ runs:
       env:
         VERSION: ${{ inputs.version }}
       shell: bash
-      run: nfpm package -p deb -f nfpm.yaml -t ${GITHUB_WORKSPACE}/dist
+      run: |
+        nfpm package -p deb -f nfpm.yaml \
+          -t ${GITHUB_WORKSPACE}/dist/kda-tool_${{ inputs.version }}-${{ inputs.os-version }}_amd64.deb
