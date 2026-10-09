@@ -1,5 +1,5 @@
 
-name: Build packages and Add ro repository
+name: Build packages and Deb repository
 
 on:
   workflow_dispatch:
@@ -55,3 +55,9 @@ jobs:
           version: ${{ matrix.package.version }}
           ghc: ${{ matrix.package.ghc }}
           cabal: ${{ matrix.package.cabal }}
+
+      - name: Upload Deb packages
+        uses: actions/upload-artifact@v7
+        with:
+          name: deb-${{ matrix.package.name }}-deb-${{ matrix.package.version }}-${{ matrix.os-version }}
+          path: dist/*.deb
