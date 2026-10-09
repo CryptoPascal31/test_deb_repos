@@ -1,0 +1,120 @@
+
+name: Build and Package Chainweb Mining client
+
+inputs:
+  tag:
+    required: true
+  ghc:
+    required: true
+  cabal:
+    required: true
+  version:
+    required: true
+
+runs:
+  using: composite
+
+  steps:
+    - name: Checkout repository
+      uses: actions/checkout@v7
+      with:
+          repository: kda-community/chainweb-mining-client.git
+          ref: ${{ inputs.tag }}
+          path: chainweb-mining-client
+
+    - name: Install NFPM
+      env:
+        NFPM_VERSION: 2.47.0
+      shell: bash
+      run: |
+        wget -q https://github.com/goreleaser/nfpm/releases/download/v${NFPM_VERSION}/nfpm_${NFPM_VERSION}_amd64.deb
+        sudo dpkg -i nfpm_${NFPM_VERSION}_amd64.deb
+
+    - name: Set permissions for .ghcup (ubuntu)
+      shell: bash
+      run: sudo chown -R $USER /usr/local/.ghcup
+
+    - name: Install GHC and Cabal
+      uses: haskell-actions/setup@v2
+      with:
+         ghc-version: ${{ inputs.ghc }}
+         cabal-version: ${{ inputs.cabal }}
+
+    - name: Setting up MPFR (Ubuntu)
+      shell: bash
+      run: sudo apt-get update && sudo apt-get install -y libmpfr-dev
+
+    - name: Create cabal.project.local
+      working-directory: ./chainweb-mining-client
+      shell: bash
+      run: |
+        cat > cabal.project.local <<EOF
+        documentation: False
+        package pact
+          tests: False
+          benchmarks: False
+          documentation: False
+          optimization: 1
+
+        EOF
+
+    - name: Print cabal.project.local
+      working-directory: ./chainweb-mining-client
+      shell: bash
+      run: cat cabal.project.local
+
+    - name: Update package database
+      shell: bash
+      run: cabal update
+
+    - name: Build dependencies
+      working-directory: ./chainweb-mining-client
+      shell: bash
+      run: cabal build --only-dependencies
+
+    - name: Build
+      working-directory: ./chainweb-mining-client
+      shell: bash
+      run: cabal build exe:chainweb-mining-client
+
+    - name: Verify Binary Linking
+      working-directory: ./chainweb-mining-client
+      shell: bash
+      run: cabal run exe:chainweb-mining-client -- --help
+
+    - name: Check version
+      working-directory: ./chainweb-mining-client
+      shell: bash
+      run: |
+        OUTPUT=$(cabal run exe:chainweb-mining-client -- --version)
+        VERSION=$(echo "$OUTPUT" | sed -n 's/.*chainweb-mining-client-\([^ ]*\) .*/\1/p')
+        if [[ "$VERSION" != "${{ inputs.version }}" ]]; then
+          echo "Version mismatch: expected ${{ inputs.version }}, got $VERSION"
+          exit 1
+        fi
+
+    - name: Copy and prepare materials
+      working-directory: ./chainweb-mining-client
+      shell: bash
+      run: |
+        cp $(cabal list-bin chainweb-mining-client) ${GITHUB_ACTION_PATH}
+        strip ${GITHUB_ACTION_PATH}/kda
+        cp README.md ${GITHUB_ACTION_PATH}
+
+    - name: Gen base config file
+      working-directory: ${{ github.action_path }}
+      shell: bash
+      run: |
+        mkdir -p config
+        chainweb-mining-client \
+          --public-key 0000000000000000000000000000000000000000000000000000000000000000 \
+          --node 127.0.0.1:1848 \
+          --stratum-port 1917 \
+          --print-config > config/config.yml
+
+    #- name: Build Deb file
+    #  working-directory: ${{ github.action_path }}
+    #  env:
+    #    VERSION: ${{ inputs.version }}
+    #  shell: bash
+    #  run: nfpm package -p deb -f nfpm.yaml -t ${GITHUB_WORKSPACE}/dist

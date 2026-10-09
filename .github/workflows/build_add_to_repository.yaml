@@ -19,6 +19,13 @@ jobs:
           - resolute
 
         package:
+          - name: chainweb-mining-client
+            version: "0.8"
+            tag: "0.8"
+            ghc: 9.14.1
+            cabal: "3.16"
+            build-dir: chainweb-mining-client-1
+
           - name: kda-tool
             version: "1.2"
             tag: "1.2"
