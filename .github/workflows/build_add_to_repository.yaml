@@ -97,7 +97,7 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: deb-${{ matrix.package.name }}-deb-${{ matrix.package.version }}-${{ matrix.os-version }}
-          path: dist
+          path: dist/*.deb
 
 
   add_repo:
@@ -121,6 +121,7 @@ jobs:
       - uses: actions/download-artifact@v8
         with:
           pattern: "deb-*-${{ matrix.os-version }}"
+          merge-multiple: true
 
       - name: List files
         run: ls -alh
