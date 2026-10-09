@@ -27,6 +27,18 @@ contents:
     file_info:
       mode: 0644
 
+deb:
+  arch: amd64
+  compression: zstd
+
+  signature:
+    method: debsign
+    key_id: 0DAB3992EA300D37E3684495F98399F3FBED5A94
+
+
+
+
+
 depends:
   - libssl3t64 | libssl3   # OpenSSL (t64 sur Debian 13 / Ubuntu 24.04+)
   - zlib1g                 # zlib

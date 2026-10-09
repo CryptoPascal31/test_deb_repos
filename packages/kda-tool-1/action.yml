@@ -12,6 +12,11 @@ inputs:
     required: true
   os-version:
     required: true
+  gpg-key:
+    required: true
+  gpg-passphrase:
+    required: true
+
 
 runs:
   using: composite
@@ -112,7 +117,10 @@ runs:
       working-directory: ${{ github.action_path }}
       env:
         VERSION: ${{ inputs.version }}
+        NFPM_DEB_PASSPHRASE:  ${{ inputs.gpg-passphrase }}
+        GPG_KEY:  ${{ inputs.gpg-key }}
       shell: bash
       run: |
+        echo $GPG_KEY > gpg.key
         nfpm package -p deb -f nfpm.yaml \
           -t ${GITHUB_WORKSPACE}/dist/kda-tool_${{ inputs.version }}-${{ inputs.os-version }}_amd64.deb

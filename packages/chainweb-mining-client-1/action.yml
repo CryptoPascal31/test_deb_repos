@@ -12,6 +12,10 @@ inputs:
     required: true
   os-version:
     required: true
+  gpg-key:
+    required: true
+  gpg-passphrase:
+    required: true
 
 runs:
   using: composite

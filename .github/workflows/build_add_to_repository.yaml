@@ -87,6 +87,8 @@ jobs:
           ghc: ${{ matrix.package.ghc }}
           cabal: ${{ matrix.package.cabal }}
           os-version: ${{ matrix.os-version }}
+          gpg-key: ${{ secrets.APT_SIGNING_KEY }}
+          gpg-passphrase: ${{ secrets.APT_SIGNING_KEY_PASSPHRASE }}
 
       - name: List packages
         run : ls -alh dist
