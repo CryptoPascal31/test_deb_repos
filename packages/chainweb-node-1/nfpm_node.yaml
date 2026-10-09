@@ -2,6 +2,7 @@ name: chainweb-node
 arch: amd64
 platform: linux
 version: ${VERSION}
+release: ${RELEASE}
 section: utils
 priority: optional
 maintainer: kda_community@pm.me
@@ -31,6 +32,10 @@ contents:
     dst: /usr/lib/systemd/system/chainweb.service
     file_info:
       mode: 0644
+
+deb:
+  arch: amd64
+  compression: zstd
 
 scripts:
   preinstall: ./scripts/preinstall.sh

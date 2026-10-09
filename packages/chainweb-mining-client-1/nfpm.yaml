@@ -33,6 +33,11 @@ contents:
     file_info:
       mode: 0644
 
+deb:
+  arch: amd64
+  compression: zstd
+
+
 scripts:
   preinstall: ./scripts/preinstall.sh
   postinstall: ./scripts/postinstall.sh

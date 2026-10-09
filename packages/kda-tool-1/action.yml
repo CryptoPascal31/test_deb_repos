@@ -12,10 +12,6 @@ inputs:
     required: true
   os-version:
     required: true
-  gpg-key:
-    required: true
-  gpg-passphrase:
-    required: true
   pkg-release:
     required: true
 
@@ -119,8 +115,6 @@ runs:
       env:
         VERSION: ${{ inputs.version }}
         RELEASE: ${{ inputs.pkg-release }}-${{ inputs.os-version }}
-        NFPM_DEB_PASSPHRASE:  ${{ inputs.gpg-passphrase }}
-        GPG_KEY:  ${{ inputs.gpg-key }}
       shell: bash
       run: |
         echo $GPG_KEY > gpg.key

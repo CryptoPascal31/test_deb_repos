@@ -99,8 +99,6 @@ jobs:
           cabal: ${{ matrix.package.cabal }}
           os-version: ${{ matrix.os-version }}
           pkg-release: ${{ matrix.package.pkg-release }}
-          gpg-key: ${{ secrets.APT_SIGNING_KEY }}
-          gpg-passphrase: ${{ secrets.APT_SIGNING_KEY_PASSPHRASE }}
 
       - name: List packages
         run : ls -alh dist

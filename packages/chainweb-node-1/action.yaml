@@ -12,10 +12,6 @@ inputs:
     required: true
   os-version:
     required: true
-  gpg-key:
-    required: true
-  gpg-passphrase:
-    required: true
   pkg-release:
     required: true
 
@@ -129,6 +125,7 @@ runs:
       working-directory: ${{ github.action_path }}
       env:
         VERSION: ${{ inputs.version }}
+        RELEASE: ${{ inputs.pkg-release }}-${{ inputs.os-version }}
       shell: bash
       run: |
         nfpm package -p deb -f nfpm_node.yaml \
@@ -138,6 +135,7 @@ runs:
       working-directory: ${{ github.action_path }}
       env:
         VERSION: ${{ inputs.version }}
+        RELEASE: ${{ inputs.pkg-release }}-${{ inputs.os-version }}
       shell: bash
       run: |
         nfpm package -p deb -f nfpm_compact.yaml \
