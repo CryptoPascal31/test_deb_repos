@@ -76,7 +76,7 @@ jobs:
         uses: actions/cache@v6
         with:
           path: dist
-          key: deb-${{ hashFiles(format('packages/{0}/**', matrix.package.build-dir), '.cache_ref') }}
+          key: build-${{ hashFiles(format('packages/{0}/**', matrix.package.build-dir), '.cache_ref') }}
 
       - name: Build package
         if: steps.cache-deb.outputs.cache-hit != 'true'
