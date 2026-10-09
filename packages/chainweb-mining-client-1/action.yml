@@ -98,7 +98,7 @@ runs:
       shell: bash
       run: |
         cp $(cabal list-bin chainweb-mining-client) ${GITHUB_ACTION_PATH}
-        strip ${GITHUB_ACTION_PATH}/kda
+        strip ${GITHUB_ACTION_PATH}/chainweb-mining-client
         cp README.md ${GITHUB_ACTION_PATH}
 
     - name: Gen base config file
