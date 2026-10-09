@@ -53,4 +53,4 @@ jobs:
           tag: ${{ matrix.package.tag }}
           cabal: ${{ matrix.package.version }}
           ghc: ${{ matrix.package.ghc }}
-          cabal: ${{ matrix.package.cabal }}
+          version: ${{ matrix.package.cabal }}
