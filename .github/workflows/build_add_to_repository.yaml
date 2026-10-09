@@ -63,6 +63,7 @@ jobs:
           printf '%s\n' "$MATRIX_JSON" > .cache_ref
 
       - name: Cache Deb files
+        id: cache-deb
         uses: actions/cache@v6
         with:
           path: dist
@@ -70,6 +71,7 @@ jobs:
 
 
       - name: Build package
+        if: steps.cache-deb.outputs.cache-hit != 'true'
         uses: ./current
         with:
           tag: ${{ matrix.package.tag }}
