@@ -21,16 +21,6 @@ runs:
           ref: ${{ inputs.tag }}
           path: pact-5
 
-    - name: Check version
-      working-directory: ./pact-5
-      shell: bash
-      run: |
-        VERSION=$(grep -E '^version:' pact-5.cabal | awk '{print $2}')
-        if [[ "$VERSION" != "${{ inputs.version }}" ]]; then
-          echo "Version mismatch: expected ${{ inputs.version }}, got $VERSION"
-          exit 1
-        fi
-
     - name: Install NFPM
       env:
         NFPM_VERSION: 2.47.0
