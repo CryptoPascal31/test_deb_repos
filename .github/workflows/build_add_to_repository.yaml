@@ -9,6 +9,7 @@ on:
 jobs:
   build_deb:
     strategy:
+      fail-fast: false
       matrix:
         os-version:
           - bookworm
@@ -42,7 +43,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v7
 
-      - name: Prepare dirs action
+      - name: Prepare directories
         run: |
           cp -rf packages/${{ matrix.package.name }} current
           mkdir -p dist

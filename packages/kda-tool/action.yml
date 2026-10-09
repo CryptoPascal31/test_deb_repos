@@ -12,6 +12,9 @@ inputs:
   version:
     required: true
 
+env:
+  NFPM_VERSION: 2.47.0
+
 
 runs:
   using: composite
@@ -33,6 +36,12 @@ runs:
           echo "Version mismatch: expected ${{ inputs.version }}, got $VERSION"
           exit 1
         fi
+
+    - name: Install NFPM
+      shell: bash
+      run: |
+        wget -q0 https://github.com/goreleaser/nfpm/releases/download/v${NFPM_VERSION}/nfpm_${NFPM_VERSION}_amd64.deb
+        dpkg -i nfpm_${NFPM_VERSION}_amd64.deb
 
     - name: Set permissions for .ghcup (ubuntu)
       shell: bash
@@ -85,16 +94,17 @@ runs:
     - name: Build
       working-directory: ./kda-tool
       shell: bash
-      run: cabal exe:kda
+      run: cabal build exe:kda
 
     - name: Verify Binary Linking
       working-directory: ./kda-tool
       shell: bash
       run: cabal run exe:kda -- --help
 
-    - name: Copy and strip binary
+    - name: Copy and prepare materials
       working-directory: ./kda-tool
       shell: bash
       run: |
-        cp $(cabal list-bin kda) ../dist
-        strip ../dist/kda
+        cp $(cabal list-bin kda) ${GITHUB_ACTION_PATH}
+        strip ${GITHUB_ACTION_PATH}/kda
+        cp README.md ${GITHUB_ACTION_PATH}
