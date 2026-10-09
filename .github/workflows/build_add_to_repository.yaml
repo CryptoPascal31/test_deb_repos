@@ -51,6 +51,6 @@ jobs:
         uses: ./current
         with:
           tag: ${{ matrix.package.tag }}
-          cabal: ${{ matrix.package.version }}
+          version: ${{ matrix.package.version }}
           ghc: ${{ matrix.package.ghc }}
-          version: ${{ matrix.package.cabal }}
+          cabal: ${{ matrix.package.cabal }}
