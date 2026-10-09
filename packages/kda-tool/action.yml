@@ -111,4 +111,4 @@ runs:
       env:
         VERSION: ${{ inputs.version }}
       shell: bash
-      run: nfpm package -p deb -f nfpm.yaml -t d ${GITHUB_WORKSPACE}/dist
+      run: nfpm package -p deb -f nfpm.yaml -t ${GITHUB_WORKSPACE}/dist

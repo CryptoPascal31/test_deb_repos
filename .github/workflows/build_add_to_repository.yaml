@@ -56,6 +56,9 @@ jobs:
           ghc: ${{ matrix.package.ghc }}
           cabal: ${{ matrix.package.cabal }}
 
+      - name: List packages
+        run : ls -alh dist
+
       - name: Upload Deb packages
         uses: actions/upload-artifact@v7
         with:
