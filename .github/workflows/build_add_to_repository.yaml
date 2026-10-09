@@ -124,7 +124,7 @@ jobs:
             jammy
             noble
             resolute]
-          file: *.deb
+          file: "*.deb"
           file_target_version: ${{ matrix.os-version }}
           private_key: ${{ secrets.APT_SIGNING_KEY }}
           public_key: ${{ secrets.APT_SIGNING_PUBKEY }}
