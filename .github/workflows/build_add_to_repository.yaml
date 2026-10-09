@@ -45,7 +45,7 @@ jobs:
       - name: Prepare dirs action
         run: |
           cp -rf packages/${{ matrix.package.name }} current
-          mkdr -p dist
+          mkdir -p dist
 
       - name: Build package
         uses: ./current
