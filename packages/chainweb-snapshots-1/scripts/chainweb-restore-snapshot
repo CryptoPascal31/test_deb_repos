@@ -1,0 +1,214 @@
+#!/usr/bin/env bash
+set -u
+
+CONFIG_FILE="/etc/chainweb/config.yaml"
+RSYNC_BASE="rsync://snapshots.chainweb-community.org/snapshots"
+LOG_FILE="$(mktemp /tmp/chainweb-rsync.XXXXXX.log)"
+TITLE="Chainweb snapshot restore"
+
+# ---------------------------------------------------------------------------
+# Helpers
+# ---------------------------------------------------------------------------
+die() {
+    whiptail --title "$TITLE" --msgbox "ERROR: $1" 12 70
+    exit 1
+}
+
+cancel() {
+    echo "Cancelled by user."
+    exit 0
+}
+
+# ---------------------------------------------------------------------------
+# Prerequisites
+# ---------------------------------------------------------------------------
+for cmd in whiptail yq rsync; do
+    command -v "$cmd" >/dev/null 2>&1 || {
+        echo "ERROR: '$cmd' is required but not installed." >&2
+        exit 1
+    }
+done
+
+# ---------------------------------------------------------------------------
+# 1 & 2 - Read config values with yq (defaults if the config file is missing)
+# ---------------------------------------------------------------------------
+DB_DIR_CONFIG=""          # default: no pre-filled directory
+FULL_HISTORIC="false"     # default: fullHistoricPactState disabled
+
+if [ -r "$CONFIG_FILE" ]; then
+    # '-r' (raw output, no quotes) works with both the Debian/Python yq and mikefarah's yq v4
+    DB_DIR_CONFIG="$(yq -r '.databaseDirectory' "$CONFIG_FILE" 2>/dev/null)"
+    FULL_HISTORIC="$(yq -r '.chainweb.fullHistoricPactState' "$CONFIG_FILE" 2>/dev/null)"
+else
+    whiptail --title "WARNING" --msgbox \
+"Config file not found or not readable:
+  $CONFIG_FILE
+
+Default values will be used:
+  - databaseDirectory: (none, you will have to enter it)
+  - chainweb.fullHistoricPactState: false" 14 72
+fi
+
+if [ -z "$DB_DIR_CONFIG" ] || [ "$DB_DIR_CONFIG" = "null" ]; then
+    DB_DIR_CONFIG=""
+fi
+
+# ---------------------------------------------------------------------------
+# 3 - Warning if fullHistoricPactState is true
+# ---------------------------------------------------------------------------
+if [ "$FULL_HISTORIC" = "true" ]; then
+    whiptail --title "WARNING" --msgbox \
+"chainweb.fullHistoricPactState is set to TRUE in:
+  $CONFIG_FILE
+
+The database you are about to restore will NOT be compatible with this node
+unless you change this value in config.yaml (set it to false)." 14 72
+fi
+
+# ---------------------------------------------------------------------------
+# 3b - Ask for the database directory
+# ---------------------------------------------------------------------------
+DB_DIR="$(whiptail --title "$TITLE" --inputbox \
+    "Database directory:" 10 70 "$DB_DIR_CONFIG" \
+    3>&1 1>&2 2>&3)" || cancel
+
+# Strip trailing slashes
+DB_DIR="${DB_DIR%/}"
+
+case "$DB_DIR" in
+    ""|"/") die "Invalid database directory: '${DB_DIR:-<empty>}'." ;;
+esac
+
+# The database directory must already exist
+[ -d "$DB_DIR" ] || die "Database directory '$DB_DIR' does not exist."
+
+[ -w "$DB_DIR" ] || die "'$DB_DIR' is not writable. Try running with sudo."
+
+# ---------------------------------------------------------------------------
+# 4 - If directory "0" exists, ask for confirmation to delete it
+# ---------------------------------------------------------------------------
+DELETE_ZERO=0
+if [ -d "$DB_DIR/0" ]; then
+    whiptail --title "$TITLE" --yesno \
+"The folder '$DB_DIR/0' already exists.
+
+It must be deleted before restoring the snapshot.
+Delete it and continue?" 12 70 || cancel
+    DELETE_ZERO=1
+fi
+
+# ---------------------------------------------------------------------------
+# 5 - Database type
+# ---------------------------------------------------------------------------
+DB_TYPE="$(whiptail --title "$TITLE" --menu \
+    "Select the database type:" 14 75 2 \
+    "compacted" "Compacted database (60 Gb): Miners, Pact calls" \
+    "full"      "Full database (450 Gb): Indexers, History nodes " \
+    3>&1 1>&2 2>&3)" || cancel
+
+# Snapshot date: today's date, delayed by 6 hours (UTC)
+SNAP_DATE="$(date -u -d '6 hours ago' +%Y-%m-%d)"
+SOURCE_URL="$RSYNC_BASE/$DB_TYPE/$SNAP_DATE/"
+
+# Final confirmation
+whiptail --title "$TITLE" --yesno \
+"Summary:
+
+  Source:      $SOURCE_URL
+  Destination: $DB_DIR/
+  Delete '$DB_DIR/0' first: $([ "$DELETE_ZERO" -eq 1 ] && echo yes || echo no)
+
+Proceed?" 15 78 || cancel
+
+# ---------------------------------------------------------------------------
+# 6 - Delete directory 0
+# ---------------------------------------------------------------------------
+if [ "$DELETE_ZERO" -eq 1 ]; then
+    echo "Deleting $DB_DIR/0 ..."
+    rm -rf -- "${DB_DIR:?}/0" || die "Failed to delete '$DB_DIR/0'."
+fi
+
+# ---------------------------------------------------------------------------
+# 7 - rsync
+# ---------------------------------------------------------------------------
+clear
+echo "Source:      $SOURCE_URL"
+echo "Destination: $DB_DIR/"
+echo "Log file:    $LOG_FILE"
+echo
+
+rsync -avz --partial --info=progress2 \
+    "$SOURCE_URL" "$DB_DIR/" \
+    2> >(tee "$LOG_FILE" >&2)
+RC=$?
+sleep 1   # let the stderr tee flush
+
+# ---------------------------------------------------------------------------
+# 8 - Diagnostic
+# ---------------------------------------------------------------------------
+if [ "$RC" -eq 0 ]; then
+    PERM_MSG="Directory '$DB_DIR/0' not present: permissions step skipped."
+
+    if [ -d "$DB_DIR/0" ]; then
+        # Owner chainweb:chainweb, rw for user, read-only for others.
+        # 'X' keeps the execute bit on directories only, so they stay traversable.
+        if chown -R chainweb:chainweb "$DB_DIR/0" \
+           && chmod -R u=rwX,go=rX "$DB_DIR/0"; then
+            PERM_MSG="Permissions on '$DB_DIR/0' set (chainweb:chainweb, u=rw, go=r)."
+        else
+            PERM_MSG="WARNING: could not change owner/permissions on '$DB_DIR/0'
+(does the 'chainweb' user exist? are you root?)."
+        fi
+    fi
+
+    whiptail --title "$TITLE" --msgbox \
+"Snapshot restored successfully.
+
+  Source:      $SOURCE_URL
+  Destination: $DB_DIR/
+
+$PERM_MSG" 15 78
+    exit 0
+fi
+
+case "$RC" in
+    1)  MEANING="Syntax or usage error." ;;
+    2)  MEANING="Protocol incompatibility." ;;
+    3)  MEANING="Errors selecting input/output files or directories." ;;
+    5)  MEANING="Error starting client-server protocol (server refused the connection or module unknown)." ;;
+    10) MEANING="Error in socket I/O (cannot connect: check network, DNS or firewall)." ;;
+    11) MEANING="Error in file I/O (disk full or permission problem on the destination)." ;;
+    12) MEANING="Error in rsync protocol data stream." ;;
+    23) MEANING="Partial transfer due to error (missing remote path, e.g. no snapshot for $SNAP_DATE, or permission denied)." ;;
+    24) MEANING="Some source files vanished during transfer." ;;
+    30) MEANING="Timeout in data send/receive." ;;
+    35) MEANING="Timeout waiting for daemon connection." ;;
+    *)  MEANING="Unknown error." ;;
+esac
+
+LAST_LINES="$(tail -n 8 "$LOG_FILE" 2>/dev/null)"
+FREE_SPACE="$(df -h "$DB_DIR" 2>/dev/null | awk 'NR==2 {print $4 " free on " $6}')"
+
+whiptail --title "rsync FAILED" --scrolltext --msgbox \
+"rsync exited with code $RC
+
+Meaning: $MEANING
+
+Source:  $SOURCE_URL
+Target:  $DB_DIR/
+Disk:    ${FREE_SPACE:-unknown}
+
+Possible causes:
+  - Snapshot for $SNAP_DATE ($DB_TYPE) is not published yet
+  - No network access / DNS or firewall issue
+  - Not enough disk space
+  - Insufficient permissions on $DB_DIR
+
+Last log lines:
+$LAST_LINES
+
+Full log: $LOG_FILE
+
+You can re-run the script: --partial lets rsync resume the transfer." 30 80
+
+exit "$RC"

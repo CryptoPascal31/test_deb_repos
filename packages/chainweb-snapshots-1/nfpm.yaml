@@ -1,0 +1,26 @@
+name: chainweb-snapshots
+arch: amd64
+platform: linux
+version: ${VERSION}
+release: ${RELEASE}
+section: utils
+priority: optional
+maintainer: kda_community@pm.me
+description:
+vendor: Kadena Community Edition
+homepage: https://github.com/kda-community
+license: BSD-3-Clause
+
+contents:
+  - src: ./scripts/chainweb-restore-snapshot
+    dst: /usr/bin/chainweb-restore-snapshot
+    file_info:
+      mode: 0755
+
+deb:
+  arch: amd64
+  compression: zstd
+
+depends:
+  - yq
+  - whiptail

@@ -54,6 +54,14 @@ jobs:
             build-dir: chainweb-node-1
             pkg-release: "1"
 
+          - name: chainweb-snapshots
+            version: "1.0"
+            tag: ""
+            ghc: ""
+            cabal: ""
+            build-dir: chainweb-snapshots-1
+            pkg-release: "1"
+
         include:
           - os-version: bookworm
             runner: ubuntu-22.04
