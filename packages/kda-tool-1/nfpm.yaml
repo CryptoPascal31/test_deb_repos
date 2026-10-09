@@ -16,7 +16,7 @@ contents:
     file_info:
       mode: 0755
 
-  - src: ./config/monapp.conf
+  - src: ./config/config.json
     dst: /etc/kda/config.json
     type: config|noreplace
     file_info:
