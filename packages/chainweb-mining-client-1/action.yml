@@ -114,9 +114,11 @@ runs:
           --stratum-port 1917 \
           --print-config > config/config.yml
 
-    #- name: Build Deb file
-    #  working-directory: ${{ github.action_path }}
-    #  env:
-    #    VERSION: ${{ inputs.version }}
-    #  shell: bash
-    #  run: nfpm package -p deb -f nfpm.yaml -t ${GITHUB_WORKSPACE}/dist
+    - name: Build Deb file
+      working-directory: ${{ github.action_path }}
+      env:
+        VERSION: ${{ inputs.version }}
+      shell: bash
+      run: |
+        nfpm package -p deb -f nfpm.yaml \
+          -t ${GITHUB_WORKSPACE}/dist/chainweb-mining-client_${{ inputs.version }}-${{ inputs.os-version }}_amd64.deb
