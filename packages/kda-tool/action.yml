@@ -12,12 +12,14 @@ inputs:
   version:
     required: true
 
-env:
-  NFPM_VERSION: 2.47.0
+
 
 
 runs:
   using: composite
+
+  env:
+    NFPM_VERSION: 2.47.0
 
   steps:
     - name: Checkout repository
