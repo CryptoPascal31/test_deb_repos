@@ -105,3 +105,10 @@ runs:
         cp $(cabal list-bin kda) ${GITHUB_ACTION_PATH}
         strip ${GITHUB_ACTION_PATH}/kda
         cp README.md ${GITHUB_ACTION_PATH}
+
+    - name: Build Deb file
+      working-directory: ${{ github.action_path }}
+      env:
+        VERSION: ${{ inputs.version }}
+      shell: bash
+      run: nfpm package -p deb -f nfpm.yaml -t d ${GITHUB_WORKSPACE}/dist
