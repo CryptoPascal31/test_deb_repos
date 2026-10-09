@@ -12,6 +12,14 @@ runs:
   using: composite
 
   steps:
+    - name: Install NFPM
+      env:
+        NFPM_VERSION: 2.47.0
+      shell: bash
+      run: |
+        wget -q https://github.com/goreleaser/nfpm/releases/download/v${NFPM_VERSION}/nfpm_${NFPM_VERSION}_amd64.deb
+        sudo dpkg -i nfpm_${NFPM_VERSION}_amd64.deb
+
     - name: Build Debian package
       working-directory: ${{ github.action_path }}
       env:

@@ -3,10 +3,10 @@ arch: amd64
 platform: linux
 version: ${VERSION}
 release: ${RELEASE}
-section: utils
+section: devel
 priority: optional
 maintainer: kda_community@pm.me
-description: Pact command line
+description: Programming language of Kadena
 vendor: Kadena Community Edition
 homepage: https://github.com/kda-community/pact-5
 license: BSD-3-Clause

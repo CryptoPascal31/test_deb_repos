@@ -3,10 +3,10 @@ arch: amd64
 platform: linux
 version: ${VERSION}
 release: ${RELEASE}
-section: utils
+section: misc
 priority: optional
 maintainer: kda_community@pm.me
-description:
+description: Tool to build and use Kadena transactions
 vendor: Kadena Community Edition
 homepage: https://github.com/kda-community/kda-tool
 license: BSD-3-Clause

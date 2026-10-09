@@ -3,10 +3,10 @@ arch: amd64
 platform: linux
 version: ${VERSION}
 release: ${RELEASE}
-section: utils
+section: misc
 priority: optional
 maintainer: kda_community@pm.me
-description:
+description: Mining Client for Chainweb node
 vendor: Kadena Community Edition
 homepage: https://github.com/kda-community/chainweb-mining-client
 

@@ -6,7 +6,7 @@ release: ${RELEASE}
 section: utils
 priority: optional
 maintainer: kda_community@pm.me
-description:
+description: Compaction utility for Chainweb databases
 vendor: Kadena Community Edition
 homepage: https://github.com/kda-community/chainweb-node
 license: BSD-3-Clause

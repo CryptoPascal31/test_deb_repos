@@ -6,7 +6,7 @@ release: ${RELEASE}
 section: utils
 priority: optional
 maintainer: kda_community@pm.me
-description:
+description: Utility to download Kadena blockchain snapshots
 vendor: Kadena Community Edition
 homepage: https://github.com/kda-community
 license: BSD-3-Clause
