@@ -87,3 +87,45 @@ jobs:
         with:
           name: deb-${{ matrix.package.name }}-deb-${{ matrix.package.version }}-${{ matrix.os-version }}
           path: dist/*.deb
+
+  add_repo:
+    runs-on: ubuntu-latest
+    needs: build_deb
+    strategy:
+      max-parallel: 1
+      matrix:
+        os-version:
+          - bookworm
+          - trixie
+          - jammy
+          - noble
+          - resolute]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - uses: actions/download-artifact@v8
+        with:
+          pattern: "deb-*-${{ matrix.os-version }}"
+
+      - name: List files
+        run: ls -alh
+
+      - name: Add ${{ matrix.os-version }} release
+        uses: smeinecke/apt-repo-action@v2.2.1
+        with:
+          github_token: ${{ github.token }}
+          repo_supported_arch: amd64
+
+          repo_supported_version: |
+            bookworm
+            trixie
+            jammy
+            noble
+            resolute]
+          file: *.deb
+          file_target_version: ${{ matrix.os-version }}
+          private_key: ${{ secrets.APT_SIGNING_KEY }}
+          public_key: ${{ secrets.APT_SIGNING_PUBKEY }}
+          key_passphrase: ${{ secrets.APT_SIGNING_KEY_PASSPHRASE }}

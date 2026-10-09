@@ -106,7 +106,7 @@ runs:
       shell: bash
       run: |
         mkdir -p config
-        chainweb-mining-client \
+        ./chainweb-mining-client \
           --public-key 0000000000000000000000000000000000000000000000000000000000000000 \
           --node 127.0.0.1:1848 \
           --stratum-port 1917 \
