@@ -2,6 +2,7 @@ name: chainweb-mining-client
 arch: amd64
 platform: linux
 version: ${VERSION}
+release: ${RELEASE}
 section: utils
 priority: optional
 maintainer: kda_community@pm.me

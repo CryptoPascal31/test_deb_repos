@@ -112,6 +112,7 @@ runs:
       working-directory: ${{ github.action_path }}
       env:
         VERSION: ${{ inputs.version }}
+        RELEASE: 1-${{ inputs.os-version }}
       shell: bash
       run: |
         nfpm package -p deb -f nfpm.yaml \

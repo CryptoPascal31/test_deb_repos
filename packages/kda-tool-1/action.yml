@@ -117,6 +117,7 @@ runs:
       working-directory: ${{ github.action_path }}
       env:
         VERSION: ${{ inputs.version }}
+        RELEASE: 1-${{ inputs.os-version }}
         NFPM_DEB_PASSPHRASE:  ${{ inputs.gpg-passphrase }}
         GPG_KEY:  ${{ inputs.gpg-key }}
       shell: bash
