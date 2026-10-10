@@ -49,6 +49,10 @@ runs:
          ghc-version: ${{ inputs.ghc }}
          cabal-version: ${{ inputs.cabal }}
 
+    - name: Update package database
+      shell: bash
+      run: cabal update
+
     - name: Setting up MPFR (Ubuntu)
       shell: bash
       run: sudo apt-get update && sudo apt-get install -y libmpfr-dev
@@ -73,37 +77,19 @@ runs:
           /usr/local/opt/openssl/lib/
         EOF
 
-    - name: Print cabal.project.local
-      working-directory: ./kda-tool
-      shell: bash
-      run: cat cabal.project.local
-
-    - name: Update package database
-      shell: bash
-      run: cabal update
-
-    - name: Build dependencies
-      working-directory: ./kda-tool
-      shell: bash
-      run: cabal build --only-dependencies
-
-    - name: Build
-      working-directory: ./kda-tool
-      shell: bash
-      run: cabal build exe:kda
-
-    - name: Verify Binary Linking
-      working-directory: ./kda-tool
-      shell: bash
-      run: cabal run exe:kda -- --help
+    - name: Build with Cabal
+      uses: ./actions/cabal_std_build
+      with:
+        src_dir: kda-tool
+        dist_dir: ${{ github.action_path }}
+        exe: kda
 
     - name: Copy and prepare materials
-      working-directory: ./kda-tool
+      working-directory: ${{ github.action_path }}
       shell: bash
       run: |
-        cp $(cabal list-bin kda) ${GITHUB_ACTION_PATH}
-        strip ${GITHUB_ACTION_PATH}/kda
-        cp README.md ${GITHUB_ACTION_PATH}
+        strip kda
+        cp ${GITHUB_WORKSPACE}/kda-tool/README.md .
 
     - name: Build Deb file
       working-directory: ${{ github.action_path }}
