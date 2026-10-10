@@ -1,0 +1,96 @@
+Package: chainweb-compact
+Version: 3.2.1-1-trixie
+Architecture: amd64
+Maintainer: kda_community@pm.me
+Installed-Size: 85296
+Depends: libssl3t64 | libssl3, zlib1g, libgmp10, libmpfr6, chainweb-node
+Homepage: https://github.com/kda-community/chainweb-node
+Priority: optional
+Section: utils
+Filename: pool/main/c/chainweb-compact/chainweb-compact_3.2.1-1-trixie_amd64.deb
+Size: 18139678
+SHA256: 36f2b40ba9fd80a18519c244dddef5db454045c7d68854f0ccaa7c8378e56937
+SHA1: 04b46cbae422405b2e411954de0f30a367775eee
+MD5sum: 3da53fc4bfcde4f158ff22537710a8b8
+Description: Compaction utility for Chainweb databases
+
+Package: chainweb-mining-client
+Version: 0.8.0-1-trixie
+Architecture: amd64
+Maintainer: kda_community@pm.me
+Installed-Size: 33643
+Depends: zlib1g, libgmp10
+Homepage: https://github.com/kda-community/chainweb-mining-client
+Priority: optional
+Section: misc
+Filename: pool/main/c/chainweb-mining-client/chainweb-mining-client_0.8.0-1-trixie_amd64.deb
+Size: 6949996
+SHA256: e8f04691498cefbe1c3456dc48ecd4b3db844b6c77a597c27e93b4c853d1257a
+SHA1: 2a07fed09b2a64d8a9f0cf9897c23eedb2f51082
+MD5sum: 1fa3f364f2312711d30c787f384b4970
+Description: Mining Client for Chainweb node
+
+Package: chainweb-node
+Version: 3.2.1-1-trixie
+Architecture: amd64
+Maintainer: kda_community@pm.me
+Installed-Size: 114501
+Depends: libssl3t64 | libssl3, zlib1g, libgmp10, libmpfr6, ca-certificates, libsnappy1v5, liblz4-1, libbz2-1.0, libgflags2.2, zstd, locales, curl, jq
+Homepage: https://github.com/kda-community/chainweb-node
+Priority: optional
+Section: misc
+Filename: pool/main/c/chainweb-node/chainweb-node_3.2.1-1-trixie_amd64.deb
+Size: 23633984
+SHA256: 1e4a4b1e81ddaa14fdee456daa02a0784b886fc1821dfd077f33e460497f05c2
+SHA1: ce8bbb67301198711461ee00ff6fb403d0f27300
+MD5sum: 3ab22a9bf58cbe296ed63711649c366f
+Description: Chainweb node for Kadena network
+
+Package: chainweb-snapshots
+Version: 1.0.0-1
+Architecture: amd64
+Maintainer: kda_community@pm.me
+Installed-Size: 7
+Depends: yq, whiptail, rsync, jq, chainweb-node
+Homepage: https://github.com/kda-community
+Priority: optional
+Section: utils
+Filename: pool/main/c/chainweb-snapshots/chainweb-snapshots_1.0.0-1_amd64.deb
+Size: 3446
+SHA256: 1336d9df6d77d444648b7583abfa4aaf38acdda5557a18a359ed4f0ad72a1d7b
+SHA1: 5b0285e7a5224daecf52cf28dbf86db399d75a31
+MD5sum: d9744283f508325b6658626f5063db1e
+Description: Utility to download Kadena blockchain snapshots
+
+Package: kda-tool
+Version: 1.2.0-1-trixie
+Architecture: amd64
+Maintainer: kda_community@pm.me
+Installed-Size: 49909
+Depends: libssl3t64 | libssl3, zlib1g, libgmp10, libmpfr6, jq
+Homepage: https://github.com/kda-community/kda-tool
+Priority: optional
+Section: misc
+Filename: pool/main/k/kda-tool/kda-tool_1.2.0-1-trixie_amd64.deb
+Size: 9691656
+SHA256: ff705df6f4ca66fbd44e1388087d1180f8d2ae230f6375a6dd0182293a5fa602
+SHA1: fe0ede6b83f8a978c14faa2eecc23314f08e0d5a
+MD5sum: 1ede479fd8c2f7a3ca1c3158df2b398f
+Description: Tool to build and use Kadena transactions
+
+Package: pact
+Version: 5.4.1-1-trixie
+Architecture: amd64
+Maintainer: kda_community@pm.me
+Installed-Size: 134291
+Depends: libssl3t64 | libssl3, zlib1g, libgmp10, libmpfr6
+Homepage: https://github.com/kda-community/pact-5
+Priority: optional
+Section: devel
+Filename: pool/main/p/pact/pact_5.4.1-1-trixie_amd64.deb
+Size: 23660242
+SHA256: 7b833f1192f5d9370513dcbe805079d3d0bc1c85f837144cbbfee9ab79776488
+SHA1: 02179004c7b1e9e5a133a666cdc30929f2154642
+MD5sum: 3a947f6867ef3ed0e49a6b0871fb7836
+Description: Programming language of Kadena
+

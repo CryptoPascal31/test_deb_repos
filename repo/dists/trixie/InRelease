@@ -1,0 +1,27 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+Codename: trixie
+Date: Sat, 10 Oct 2026 19:24:30 UTC
+Architectures: amd64
+Components: main
+Description: CryptoPascal31/test_deb_repos
+MD5Sum:
+ e8838627f27cfd64d8b2c0eaef358132 3474 main/binary-amd64/Packages
+ 733f1545651a7c9ddbcd78dd065a4ed7 1271 main/binary-amd64/Packages.gz
+ 38c3ee3dff8df3b75ceeaa9a1b54f402 79 main/binary-amd64/Release
+SHA1:
+ 8e47619b8f7ef3381706b41d27737a895f67ea72 3474 main/binary-amd64/Packages
+ d9891f94da28e2001b88a1f83e1ca1d522587b19 1271 main/binary-amd64/Packages.gz
+ daadf2907b54d67421b5206bd342eb09b02eaf69 79 main/binary-amd64/Release
+SHA256:
+ 221a91f0671bcb739c636d21e1c8ec2b67be42e54325fa4cde13ac3c8eff8c53 3474 main/binary-amd64/Packages
+ fd4507340d8a7a42941cedc5adfb58f1825e05ee6899b2e91c7d6520c62c2e14 1271 main/binary-amd64/Packages.gz
+ 551bbad6bfca0b02b78d45485a5b51167a5497ebca1a73d3eeedd94de3b4d7e7 79 main/binary-amd64/Release
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQQNqzmS6jANN+NoRJX5g5nz++1alAUCasqQ7gAKCRD5g5nz++1a
+lMIwAP9RJ8MhXtawEpcTsH7Xz00Azm5NB7RE6Iy1wRBuZ+BizQD/Snir5mbWkYCl
+RH+KFvgh5knAFUgFMnNqEB9nv27Hag0=
+=nWZ8
+-----END PGP SIGNATURE-----
