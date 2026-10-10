@@ -73,7 +73,7 @@ runs:
       shell: bash
       run: |
         strip chainweb-mining-client
-        cp chainweb-mining-client/README.md .
+        cp ${GITHUB_WORKSPACE}/chainweb-mining-client/README.md .
 
     - name: Check version
       working-directory: ${{ github.action_path }}
