@@ -165,7 +165,7 @@ jobs:
           skip_duplicates: true
 
   finalize:
-    name: Finalize Repository
+    name: Finalize
     runs-on: ubuntu-latest
     needs: add_repo
     if: always()
@@ -173,28 +173,26 @@ jobs:
       contents: write
 
     steps:
+      - name: Checkout gh-pages
+        uses: actions/checkout@v6
+        with:
+          ref: gh-pages
+
       - name: Checkout main
         uses: actions/checkout@v6
         with:
           ref: main
           path: source
 
-      - name: Checkout gh-pages
-        uses: actions/checkout@v6
-        with:
-          ref: gh-pages
-          path: public
-
       - name: Generate index.html and CNAME
         env:
           DOMAIN: ${{ vars.DOMAIN }}
         run: |
-          m4 -D DOMAIN="$DOMAIN" source/index.template.html > public/index.html
+          m4 -D DOMAIN="$DOMAIN" source/index.template.html > index.html
 
-          printf '%s\n' "$DOMAIN" > public/CNAME
+          printf '%s\n' "$DOMAIN" > CNAME
 
       - name: Commit generated files
-        working-directory: public
         run: |
           git add index.html CNAME
 
@@ -205,3 +203,24 @@ jobs:
             git commit -m "Update GitHub Pages"
             git push origin gh-pages
           fi
+
+      - name: Clean
+        run: rm -rf source
+
+      - name: Upload static files as artifact
+        id: deployment
+        uses: actions/upload-pages-artifact@5
+        with:
+          path: .
+
+  # Deployment job
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: finalize
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
