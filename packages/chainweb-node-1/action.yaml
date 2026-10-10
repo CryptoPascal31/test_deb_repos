@@ -84,7 +84,7 @@ runs:
       run: |
         strip chainweb-node
         strip compact
-        cp ${GITHUB_WORKSPACE}/chainwebènode/README.md ${GITHUB_ACTION_PATH}
+        cp ${GITHUB_WORKSPACE}/chainweb-node/README.md ${GITHUB_ACTION_PATH}
 
     - name: Check version
       working-directory: ${{ github.action_path }}

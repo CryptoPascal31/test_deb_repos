@@ -163,3 +163,28 @@ jobs:
           public_key: ${{ secrets.APT_SIGNING_PUBKEY }}
           key_passphrase: ${{ secrets.APT_SIGNING_KEY_PASSPHRASE }}
           skip_duplicates: true
+
+  cname:
+    name: Configure custom domain
+    runs-on: ubuntu-latest
+    needs: add_repo
+    if: always()
+    steps:
+      - name: Checkout gh-pages
+        uses: actions/checkout@v6
+        with:
+          ref: gh-pages
+
+      - name: Create CNAME
+        env:
+          DOMAIN: ${{ vars.CNAME }}
+        run: |
+          if [ -n "$DOMAIN" ] &&
+             { [ ! -f CNAME ] || [ "$(cat CNAME)" != "$DOMAIN" ]; }; then
+            printf '%s\n' "$DOMAIN" > CNAME
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add CNAME
+            git commit -m "Configure custom domain"
+            git push origin gh-pages
+          fi
