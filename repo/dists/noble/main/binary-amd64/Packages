@@ -1,0 +1,80 @@
+Package: chainweb-compact
+Version: 3.2.1-1-noble
+Architecture: amd64
+Maintainer: kda_community@pm.me
+Installed-Size: 85296
+Depends: libssl3t64 | libssl3, zlib1g, libgmp10, libmpfr6, chainweb-node
+Homepage: https://github.com/kda-community/chainweb-node
+Priority: optional
+Section: utils
+Filename: pool/main/c/chainweb-compact/chainweb-compact_3.2.1-1-noble_amd64.deb
+Size: 18139676
+SHA256: f173278c5673265d9c48bc967727994cb0c13405efbf52a3ebcd4b6e4a97304d
+SHA1: 8184e3a68a865016468253cf6d15dc18131250e1
+MD5sum: c7f4b25c8923cbfc7249ad30a7734992
+Description: Compaction utility for Chainweb databases
+
+Package: chainweb-mining-client
+Version: 0.8.0-1-noble
+Architecture: amd64
+Maintainer: kda_community@pm.me
+Installed-Size: 33643
+Depends: zlib1g, libgmp10
+Homepage: https://github.com/kda-community/chainweb-mining-client
+Priority: optional
+Section: misc
+Filename: pool/main/c/chainweb-mining-client/chainweb-mining-client_0.8.0-1-noble_amd64.deb
+Size: 6949994
+SHA256: 02412d143f832ce4f75180e53ca18bfc0fedd0fcd34dd76e9d977075cda98fe6
+SHA1: f54b444a133d9acc8f269e78087340cb854ad139
+MD5sum: f04241626cdce646c0731ff54c7ab7a0
+Description: Mining Client for Chainweb node
+
+Package: chainweb-node
+Version: 3.2.1-1-noble
+Architecture: amd64
+Maintainer: kda_community@pm.me
+Installed-Size: 114501
+Depends: libssl3t64 | libssl3, zlib1g, libgmp10, libmpfr6, ca-certificates, libsnappy1v5, liblz4-1, libbz2-1.0, libgflags2.2, zstd, locales, curl, jq
+Homepage: https://github.com/kda-community/chainweb-node
+Priority: optional
+Section: misc
+Filename: pool/main/c/chainweb-node/chainweb-node_3.2.1-1-noble_amd64.deb
+Size: 23633978
+SHA256: c7b3647c03be76398ee92bc0d8b255055e52530970b4011879128ed07ddbfa2b
+SHA1: b1fddd1a52bfdbe022f2ee0f49ead13a8b8426ef
+MD5sum: f53de263f1d8a59ea170e63e4b2f9454
+Description: Chainweb node for Kadena network
+
+Package: kda-tool
+Version: 1.2.0-1-noble
+Architecture: amd64
+Maintainer: kda_community@pm.me
+Installed-Size: 49909
+Depends: libssl3t64 | libssl3, zlib1g, libgmp10, libmpfr6, jq
+Homepage: https://github.com/kda-community/kda-tool
+Priority: optional
+Section: misc
+Filename: pool/main/k/kda-tool/kda-tool_1.2.0-1-noble_amd64.deb
+Size: 9691660
+SHA256: 22abd0812fa9668efe185fe366c975f421cf5fc1815e1385cb52a475afcd901d
+SHA1: a8db1d8b662859c4208e49db5dcf712aaadbf886
+MD5sum: c5f55ee9961f6ece34ed8e2cbb9a26e4
+Description: Tool to build and use Kadena transactions
+
+Package: pact
+Version: 5.4.1-1-noble
+Architecture: amd64
+Maintainer: kda_community@pm.me
+Installed-Size: 134291
+Depends: libssl3t64 | libssl3, zlib1g, libgmp10, libmpfr6
+Homepage: https://github.com/kda-community/pact-5
+Priority: optional
+Section: devel
+Filename: pool/main/p/pact/pact_5.4.1-1-noble_amd64.deb
+Size: 23660238
+SHA256: 46baebf91cbb559e7151cd05a413ed88490a9c5457b49fd8c646db7d368bbf1b
+SHA1: e78a1ad2d3b1f0a078f89c422b9c27a2943e1b97
+MD5sum: d74620fd5523b4b4978d99ce8e95edea
+Description: Programming language of Kadena
+
