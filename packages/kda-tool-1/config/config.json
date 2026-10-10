@@ -1,1 +1,9 @@
-{}
+{
+  "networks": {
+    "testnet06": "https://api.testnet.chainweb-community.org",
+    "mainnet01": "https://api.chainweb-community.org"
+  },
+  "tx-repos": [
+    "kda-community/txlib"
+  ]
+}
