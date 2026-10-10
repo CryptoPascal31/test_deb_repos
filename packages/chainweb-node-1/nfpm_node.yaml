@@ -16,6 +16,11 @@ contents:
     file_info:
       mode: 0755
 
+  - src: ./helpers/chainweb-cut-monitor
+    dst: /usr/bin/chainweb-cut-monitor
+    file_info:
+      mode: 0755
+
   - src: ./config/config.yaml
     dst: /etc/chainweb/config.yaml
     type: config|noreplace

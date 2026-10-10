@@ -1,0 +1,49 @@
+#!/bin/bash
+
+PORT=1789
+HOST=127.0.0.1
+
+for arg in "$@"; do
+    case "$arg" in
+        --port=*)
+            PORT=${arg#*=}
+            ;;
+        --host=*)
+            HOST=${arg#*=}
+            ;;
+        --help|-h)
+            echo "Usage: $0 [--host=HOST] [--port=PORT] [--help]"
+            exit 0
+            ;;
+    esac
+done
+
+echo "Node: $HOST:$PORT"
+
+LAST_CUT_HEIGHT=
+
+while true
+do
+
+if ! CUT=$(curl -fsSk https://$HOST:$PORT/chainweb/0.0/mainnet01/cut 2>/dev/null); then
+    echo "Can't connect to node"
+    sleep 10
+    continue
+fi
+
+CUT_HEIGHT=$(echo $CUT | jq .height)
+BLOCK_HEIGHT=$(echo $CUT | jq  -r '.hashes."0".height')
+BLOCK_HASH=$(echo $CUT | jq  -r '.hashes."0".hash')
+
+BLOCK_HEADER=$(curl -s -k https://$HOST:$PORT/chainweb/0.0/mainnet01/chain/0/header/$BLOCK_HASH | jq -r)
+
+BLOCK_DATE_US=$(echo $BLOCK_HEADER | basenc --base64url -d | od -An -tu8 --endian=little -j 8 -N 8)
+BLOCK_DATE=$(date -u -d "@$(($BLOCK_DATE_US / 1000000))" '+%Y-%m-%d %H:%M:%S')
+
+if [ -z "$LAST_CUT_HEIGHT" ] || [ "$LAST_CUT_HEIGHT" -ne "$CUT_HEIGHT" ]; then
+  echo "Cut Height:$CUT_HEIGHT  |  Chain 0 : Height:$BLOCK_HEIGHT / Date=$BLOCK_DATE"
+  LAST_CUT_HEIGHT=$CUT_HEIGHT
+fi
+
+sleep 2
+done
