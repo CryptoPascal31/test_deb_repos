@@ -26,3 +26,4 @@ depends:
   - whiptail
   - rsync
   - jq
+  - chainweb-node

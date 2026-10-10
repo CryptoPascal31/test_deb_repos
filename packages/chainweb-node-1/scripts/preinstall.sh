@@ -10,7 +10,6 @@ if ! getent passwd chainweb >/dev/null; then
     adduser --system \
         --ingroup chainweb \
         --home /var/lib/chainweb \
-        --no-create-home \
         --shell /usr/sbin/nologin \
         --gecos "chainweb service user" \
         chainweb
