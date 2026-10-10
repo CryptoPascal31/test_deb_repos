@@ -164,27 +164,44 @@ jobs:
           key_passphrase: ${{ secrets.APT_SIGNING_KEY_PASSPHRASE }}
           skip_duplicates: true
 
-  cname:
-    name: Configure custom domain
+  finalize:
+    name: Finalize Repository
     runs-on: ubuntu-latest
     needs: add_repo
     if: always()
+    permissions:
+      contents: write
+
     steps:
+      - name: Checkout main
+        uses: actions/checkout@v6
+        with:
+          ref: main
+          path: source
+
       - name: Checkout gh-pages
         uses: actions/checkout@v6
         with:
           ref: gh-pages
+          path: public
 
-      - name: Create CNAME
+      - name: Generate index.html and CNAME
         env:
-          DOMAIN: ${{ vars.CNAME }}
+          DOMAIN: ${{ vars.DOMAIN }}
         run: |
-          if [ -n "$DOMAIN" ] &&
-             { [ ! -f CNAME ] || [ "$(cat CNAME)" != "$DOMAIN" ]; }; then
-            printf '%s\n' "$DOMAIN" > CNAME
+          m4 -D DOMAIN="$DOMAIN" source/index.template.html > public/index.html
+
+          printf '%s\n' "$DOMAIN" > public/CNAME
+
+      - name: Commit generated files
+        working-directory: public
+        run: |
+          git add index.html CNAME
+
+          if ! git diff --cached --quiet; then
             git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add CNAME
-            git commit -m "Configure custom domain"
+            git config user.email \
+              "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -m "Update GitHub Pages"
             git push origin gh-pages
           fi
