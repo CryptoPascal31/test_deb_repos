@@ -37,3 +37,4 @@ depends:
   - zlib1g                 # zlib
   - libgmp10               # GMP
   - libmpfr6               # MPFR
+  - jq

@@ -51,7 +51,7 @@
   <pre><code>curl -fsSL https://DOMAIN/public.gpg | sudo gpg --dearmor -o /usr/share/keyrings/kda-community-apt.gpg</code></pre>
 
   <h2>2. Add the repository</h2>
-  <pre><code>echo "deb [signed-by=/usr/share/keyrings/kda-community-apt.gpg] https://DOMAIN/repo $(. /etc/os-release && echo $VERSION_CODENAME) main" | sudo tee /etc/apt/sources.list.d/example.list</code></pre>
+  <pre><code>echo "deb [signed-by=/usr/share/keyrings/kda-community-apt.gpg] https://DOMAIN/repo $(. /etc/os-release && echo $VERSION_CODENAME) main" | sudo tee /etc/apt/sources.list.d/kda-community.list</code></pre>
 
   <h2>3. Update package lists</h2>
   <pre><code>sudo apt update</code></pre>
