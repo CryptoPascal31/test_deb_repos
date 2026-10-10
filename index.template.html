@@ -41,6 +41,31 @@
     code {
       font-family: ui-monospace, monospace;
     }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0.5rem 0 0;
+    }
+
+    li {
+      padding: 6px 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    li:last-child {
+      border-bottom: none;
+    }
+
+    .pkg {
+      font-family: ui-monospace, monospace;
+      font-size: 0.95rem;
+    }
+
+    .desc {
+      color: #666;
+      font-size: 0.9rem;
+    }
   </style>
 </head>
 <body>
@@ -55,5 +80,29 @@
 
   <h2>3. Update package lists</h2>
   <pre><code>sudo apt update</code></pre>
+
+  <h2>Available packages</h2>
+  <ul>
+    <li>
+      <span class="pkg">pact</span>
+      <div class="desc">Kadena Smart Contract language</div>
+    </li>
+    <li>
+      <span class="pkg">chainweb-node</span>
+      <div class="desc">Kadena node</div>
+    </li>
+    <li>
+      <span class="pkg">chainweb-mining-client</span>
+      <div class="desc">Mining tool for Chainweb</div>
+    </li>
+    <li>
+      <span class="pkg">chainweb-snapshots</span>
+      <div class="desc">Tools to download and manage blockchain snapshots</div>
+    </li>
+    <li>
+      <span class="pkg">kda-tool</span>
+      <div class="desc">Kadena transactions tool</div>
+    </li>
+  </ul>
 </body>
 </html>
