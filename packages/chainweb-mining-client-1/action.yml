@@ -64,7 +64,7 @@ runs:
     - name: Build with Cabal
       uses: ./actions/cabal_std_build
       with:
-        src_dir: ${{ github.action_path }}/chainweb-mining-client
+        src_dir: chainweb-mining-client
         dist_dir: ${{ github.action_path }}
         exe: chainweb-mining-client
 
