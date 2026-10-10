@@ -61,3 +61,5 @@ depends:
   - libgflags2.2
   - zstd
   - locales
+  - curl
+  - jq

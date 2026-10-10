@@ -24,3 +24,5 @@ deb:
 depends:
   - yq
   - whiptail
+  - rsync
+  - jq
