@@ -1,0 +1,32 @@
+name: Cabal Standd Build
+
+inputs:
+  exe:
+    required: true
+  src_dir:
+    required: true
+  dist_dir:
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Print cabal.project.local
+      working-directory: ${{ inputs.src_dir }}
+      shell: bash
+      run: cat cabal.project.local
+
+    - name: Build
+      working-directory: ${{ inputs.src_dir }}
+      shell: bash
+      run: cabal build exe:${{ inputs.exe }}
+
+    - name: Verify Binary Linking
+      working-directory: ${{ inputs.src_dir }}
+      shell: bash
+      run: cabal run exe:${{ inputs.exe }} -- --help
+
+    - name: Move bin to final destination
+      working-directory: ${{ inputs.src_dir }}
+      shell: bash
+      run: cp $(cabal list-bin ${{ inputs.exe }}) ${{ inputs.dist_dir }}
