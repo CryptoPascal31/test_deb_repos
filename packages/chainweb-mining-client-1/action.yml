@@ -65,7 +65,7 @@ runs:
       uses: ./actions/cabal_std_build
       with:
         src_dir: ${{ github.action_path }}/chainweb-mining-client
-        dst_dir: ${{ github.action_path }}
+        dist_dir: ${{ github.action_path }}
         exe: chainweb-mining-client
 
     - name: Copy and prepare materials
