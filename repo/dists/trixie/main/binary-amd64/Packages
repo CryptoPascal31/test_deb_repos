@@ -63,19 +63,19 @@ MD5sum: d9744283f508325b6658626f5063db1e
 Description: Utility to download Kadena blockchain snapshots
 
 Package: kda-tool
-Version: 1.2.0-1-trixie
+Version: 1.3.0-1-trixie
 Architecture: amd64
 Maintainer: kda_community@pm.me
-Installed-Size: 49909
+Installed-Size: 49945
 Depends: libssl3t64 | libssl3, zlib1g, libgmp10, libmpfr6, jq
 Homepage: https://github.com/kda-community/kda-tool
 Priority: optional
 Section: misc
-Filename: pool/main/k/kda-tool/kda-tool_1.2.0-1-trixie_amd64.deb
-Size: 9691656
-SHA256: ff705df6f4ca66fbd44e1388087d1180f8d2ae230f6375a6dd0182293a5fa602
-SHA1: fe0ede6b83f8a978c14faa2eecc23314f08e0d5a
-MD5sum: 1ede479fd8c2f7a3ca1c3158df2b398f
+Filename: pool/main/k/kda-tool/kda-tool_1.3.0-1-trixie_amd64.deb
+Size: 9681760
+SHA256: 233334d0f658b6b3961166124a38f308106462d45d0d6a51c93a9875fae23598
+SHA1: 8a4c5fc706315e61a54fa971f61c0df691b4e7d4
+MD5sum: 171837c02a6d108b45627c22a58416ba
 Description: Tool to build and use Kadena transactions
 
 Package: pact

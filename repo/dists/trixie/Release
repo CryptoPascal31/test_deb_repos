@@ -1,17 +1,17 @@
 Codename: trixie
-Date: Sat, 10 Oct 2026 21:20:36 UTC
+Date: Sat, 10 Oct 2026 21:21:24 UTC
 Architectures: amd64
 Components: main
 Description: CryptoPascal31/test_deb_repos
 MD5Sum:
- e8838627f27cfd64d8b2c0eaef358132 3474 main/binary-amd64/Packages
- 733f1545651a7c9ddbcd78dd065a4ed7 1271 main/binary-amd64/Packages.gz
+ 0042634fde17c64151f2c80352febd2a 3474 main/binary-amd64/Packages
+ 40d2f01d15e9ff9ff5599cc771aac503 1274 main/binary-amd64/Packages.gz
  38c3ee3dff8df3b75ceeaa9a1b54f402 79 main/binary-amd64/Release
 SHA1:
- 8e47619b8f7ef3381706b41d27737a895f67ea72 3474 main/binary-amd64/Packages
- d9891f94da28e2001b88a1f83e1ca1d522587b19 1271 main/binary-amd64/Packages.gz
+ a0919cd29e9c01b256220cde80894d1dd311a5f4 3474 main/binary-amd64/Packages
+ fccc118daf7e1ccb751d60618f1cf3d32ac4b215 1274 main/binary-amd64/Packages.gz
  daadf2907b54d67421b5206bd342eb09b02eaf69 79 main/binary-amd64/Release
 SHA256:
- 221a91f0671bcb739c636d21e1c8ec2b67be42e54325fa4cde13ac3c8eff8c53 3474 main/binary-amd64/Packages
- fd4507340d8a7a42941cedc5adfb58f1825e05ee6899b2e91c7d6520c62c2e14 1271 main/binary-amd64/Packages.gz
+ 7818e2bcb58a9c0a8e4532695cd44541323004c0c22572e06edc8a2c770a74ec 3474 main/binary-amd64/Packages
+ ff97b03a9ed52154708004ca6050317bdf9c3622bec564b0e22cbf12218ae071 1274 main/binary-amd64/Packages.gz
  551bbad6bfca0b02b78d45485a5b51167a5497ebca1a73d3eeedd94de3b4d7e7 79 main/binary-amd64/Release
