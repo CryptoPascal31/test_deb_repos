@@ -10,7 +10,7 @@ runs:
   - name: Install NFPM
     env:
       NFPM_VERSION: ${{ inputs.version }}
-      shell: bash
-      run: |
-        wget -q https://github.com/goreleaser/nfpm/releases/download/v${NFPM_VERSION}/nfpm_${NFPM_VERSION}_amd64.deb
-        sudo dpkg -i nfpm_${NFPM_VERSION}_amd64.deb
+    shell: bash
+    run: |
+      wget -q https://github.com/goreleaser/nfpm/releases/download/v${NFPM_VERSION}/nfpm_${NFPM_VERSION}_amd64.deb
+      sudo dpkg -i nfpm_${NFPM_VERSION}_amd64.deb
