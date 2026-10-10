@@ -2,7 +2,7 @@
 Hash: SHA512
 
 Codename: bookworm
-Date: Sat, 10 Oct 2026 21:22:56 UTC
+Date: Sat, 10 Oct 2026 21:23:46 UTC
 Architectures: amd64
 Components: main
 Description: CryptoPascal31/test_deb_repos
@@ -20,8 +20,8 @@ SHA256:
  551bbad6bfca0b02b78d45485a5b51167a5497ebca1a73d3eeedd94de3b4d7e7 79 main/binary-amd64/Release
 -----BEGIN PGP SIGNATURE-----
 
-iHUEARYKAB0WIQQNqzmS6jANN+NoRJX5g5nz++1alAUCasqssQAKCRD5g5nz++1a
-lMIsAQDWxWVM2j5zX4/JgnDGAMBXHFaj0utrfwFPd6FMDHOWaAD6Auh6pCNKWI9w
-DBotap+Vr7/Q9/rmX2p5vcOk/Upb1ws=
-=lJsC
+iHUEARYKAB0WIQQNqzmS6jANN+NoRJX5g5nz++1alAUCasqs4wAKCRD5g5nz++1a
+lLzpAP9N1fVJDLsPVsI6rS879J8fzvKTmaS21EHRepZGdiQluwD/cDxnoZ6W1seH
+0u6mIj7ITDp0vMP4VOQWHXcHSxuOkQE=
+=ESKG
 -----END PGP SIGNATURE-----

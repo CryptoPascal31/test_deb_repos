@@ -47,19 +47,19 @@ MD5sum: d875dafaab4fc3cce39cb259175f82e1
 Description: Chainweb node for Kadena network
 
 Package: kda-tool
-Version: 1.2.0-1-resolute
+Version: 1.3.0-1-resolute
 Architecture: amd64
 Maintainer: kda_community@pm.me
-Installed-Size: 49928
+Installed-Size: 49964
 Depends: libssl3t64 | libssl3, zlib1g, libgmp10, libmpfr6, jq
 Homepage: https://github.com/kda-community/kda-tool
 Priority: optional
 Section: misc
-Filename: pool/main/k/kda-tool/kda-tool_1.2.0-1-resolute_amd64.deb
-Size: 9695432
-SHA256: 85909f8ba2919fb63e98ff564244d451b7767ab9d7590c0bdd11feaaa58aecc2
-SHA1: c5c46a63eb0b263c66a61ab661c111a323589d0a
-MD5sum: c1e2a8c143ce7473e6d4806c8098a18f
+Filename: pool/main/k/kda-tool/kda-tool_1.3.0-1-resolute_amd64.deb
+Size: 9687118
+SHA256: 10cb947970f7fa62e3026c3e16725ddeeeb22265706e5c27e578a2e76dfb9e60
+SHA1: bead74cc4a4d657c2d52cf1cf8bffac067fa8a31
+MD5sum: 00b7269a0ffc5cb28661c473d84abc5b
 Description: Tool to build and use Kadena transactions
 
 Package: pact
