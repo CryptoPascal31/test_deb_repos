@@ -29,17 +29,46 @@
       margin: 1.75rem 0 0.5rem;
     }
 
+    .code-block {
+      position: relative;
+      margin-bottom: 0.5rem;
+    }
+
     pre {
       background: #f5f5f5;
       border: 1px solid #ddd;
-      padding: 12px 16px;
+      padding: 12px 48px 12px 16px;
       border-radius: 6px;
       overflow-x: auto;
       font-size: 0.9rem;
+      margin: 0;
     }
 
     code {
       font-family: ui-monospace, monospace;
+    }
+
+    .copy-btn {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      padding: 4px 8px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      color: #333;
+    }
+
+    .copy-btn:hover {
+      background: #eee;
+    }
+
+    .copy-btn.copied {
+      background: #e8f5e9;
+      border-color: #a5d6a7;
+      color: #2e7d32;
     }
 
     ul {
@@ -73,22 +102,22 @@
   <p>Run these three commands on Debian or Ubuntu</p>
 
   <h2>1. Add the GPG key</h2>
-  <pre><code>curl -fsSL https://DOMAIN/public.gpg | sudo gpg --dearmor -o /usr/share/keyrings/kda-community-apt.gpg</code></pre>
+  <div class="code-block">
+    <pre><code id="cmd1">curl -fsSL https://DOMAIN/public.gpg | sudo gpg --dearmor -o /usr/share/keyrings/kda-community-apt.gpg</code></pre>
+    <button class="copy-btn" onclick="copyCode('cmd1', this)">Copy</button>
+  </div>
 
   <h2>2. Add the repository</h2>
-  <pre><code>echo "deb [signed-by=/usr/share/keyrings/kda-community-apt.gpg] https://DOMAIN/repo $(. /etc/os-release && echo $VERSION_CODENAME) main" | sudo tee /etc/apt/sources.list.d/kda-community.list</code></pre>
+  <div class="code-block">
+    <pre><code id="cmd2">echo "deb [signed-by=/usr/share/keyrings/kda-community-apt.gpg] https://DOMAIN/repo $(. /etc/os-release && echo $VERSION_CODENAME) main" | sudo tee /etc/apt/sources.list.d/kda-community.list</code></pre>
+    <button class="copy-btn" onclick="copyCode('cmd2', this)">Copy</button>
+  </div>
 
   <h2>3. Update package lists</h2>
-  <pre><code>sudo apt update</code></pre>
-
-  <h2>Supported OS</h2>
-  <ul>
-    <li> Debian Trixie 13</li>
-    <li> Debian Bookworm 12 </li>
-    <li> Ubuntu Jammy 22.04 </li>
-    <li> Ubuntu Noble 24.04 </li>
-    <li> Ubuntu Resolute 26.04 </li>
-  </ul>
+  <div class="code-block">
+    <pre><code id="cmd3">sudo apt update</code></pre>
+    <button class="copy-btn" onclick="copyCode('cmd3', this)">Copy</button>
+  </div>
 
   <h2>Available packages</h2>
   <ul>
@@ -113,5 +142,19 @@
       <div class="desc">Kadena transactions tool</div>
     </li>
   </ul>
+
+  <script>
+    function copyCode(id, btn) {
+      const text = document.getElementById(id).innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        btn.textContent = "Copied!";
+        btn.classList.add("copied");
+        setTimeout(() => {
+          btn.textContent = "Copy";
+          btn.classList.remove("copied");
+        }, 2000);
+      });
+    }
+  </script>
 </body>
 </html>
