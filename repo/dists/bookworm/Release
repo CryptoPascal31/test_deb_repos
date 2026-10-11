@@ -1,0 +1,17 @@
+Codename: bookworm
+Date: Sun, 11 Oct 2026 08:30:00 UTC
+Architectures: amd64
+Components: main
+Description: CryptoPascal31/test_deb_repos
+MD5Sum:
+ f4cb1239ab968a9a9f258959a69cea5c 3512 main/binary-amd64/Packages
+ 62d77d0c40730a81577aedddf67a47a7 1267 main/binary-amd64/Packages.gz
+ 38c3ee3dff8df3b75ceeaa9a1b54f402 79 main/binary-amd64/Release
+SHA1:
+ 38a845b5d050f48f389c2ec78e65979eacf3dcac 3512 main/binary-amd64/Packages
+ 3c38dc643315768c4fe30c1b8e286a6d44a9f4f0 1267 main/binary-amd64/Packages.gz
+ daadf2907b54d67421b5206bd342eb09b02eaf69 79 main/binary-amd64/Release
+SHA256:
+ 9e180dec5b5b3dabf47b561b30aba29943dcf82e5377c249775f14b9596d7a17 3512 main/binary-amd64/Packages
+ 338ed9b07256565714d3e013dc035e91ad26722679ae44b510fdee43b5ba8883 1267 main/binary-amd64/Packages.gz
+ 551bbad6bfca0b02b78d45485a5b51167a5497ebca1a73d3eeedd94de3b4d7e7 79 main/binary-amd64/Release

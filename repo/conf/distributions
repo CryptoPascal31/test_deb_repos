@@ -1,0 +1,30 @@
+Description: CryptoPascal31/test_deb_repos
+Codename: bookworm
+Architectures: amd64
+Components: main
+SignWith: 0DAB3992EA300D37E3684495F98399F3FBED5A94
+
+Description: CryptoPascal31/test_deb_repos
+Codename: trixie
+Architectures: amd64
+Components: main
+SignWith: 0DAB3992EA300D37E3684495F98399F3FBED5A94
+
+Description: CryptoPascal31/test_deb_repos
+Codename: jammy
+Architectures: amd64
+Components: main
+SignWith: 0DAB3992EA300D37E3684495F98399F3FBED5A94
+
+Description: CryptoPascal31/test_deb_repos
+Codename: noble
+Architectures: amd64
+Components: main
+SignWith: 0DAB3992EA300D37E3684495F98399F3FBED5A94
+
+Description: CryptoPascal31/test_deb_repos
+Codename: resolute
+Architectures: amd64
+Components: main
+SignWith: 0DAB3992EA300D37E3684495F98399F3FBED5A94
+
